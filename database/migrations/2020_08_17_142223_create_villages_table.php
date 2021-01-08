@@ -29,6 +29,6 @@ class CreateVillagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table__village');
+        Schema::dropIfExists('villages');
     }
 }

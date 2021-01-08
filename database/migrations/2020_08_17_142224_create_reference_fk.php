@@ -40,12 +40,12 @@ class CreateReferenceFk extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
 
-        Schema::table('districts', function ($table) {
-            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
-        });
-
         Schema::table('villages', function ($table) {
             $table->foreign('district_id')->references('id')->on('districts')->onDelete('cascade');
+        });
+
+        Schema::table('districts', function ($table) {
+            $table->foreign('province_id')->references('id')->on('provinces')->onDelete('cascade');
         });
     }
 
@@ -56,6 +56,38 @@ class CreateReferenceFk extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reference_fk');
+        Schema::table('members', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+        });
+
+        Schema::table('news', function (Blueprint $table) {
+            $table->dropForeign(['user_id_create']);
+        });
+
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['product_id']);
+        });
+
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropForeign(['customer_id']);
+        });
+
+        Schema::table('products', function (Blueprint $table) {
+            $table->dropForeign(['type_product_id']);
+        });
+
+        Schema::table('order_details', function (Blueprint $table) {
+            $table->dropForeign(['bill_id']);
+            $table->dropForeign(['product_id']);
+        });
+
+        Schema::table('districts', function (Blueprint $table) {
+            $table->dropForeign(['province_id']);
+        });
+
+        Schema::table('villages', function (Blueprint $table) {
+            $table->dropForeign(['district_id']);
+        });
     }
 }
